@@ -44,7 +44,7 @@ footer:
       icon: fab fa-fw fa-github
       url: https://github.com/CryoZeroLabs
     - label: CryoZeroLabs
-      icon: fab fa-fw fa-x-twitter
+      icon: fab fa-fw fa-twitter
       url: https://x.com/CryoZeroLabs
 defaults:
   - scope:
