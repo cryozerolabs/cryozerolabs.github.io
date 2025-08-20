@@ -74,3 +74,8 @@ tag_archive:
   type: liquid
   path: "/tags/"
 theme: minimal-mistakes-jekyll
+analytics:
+  provider: "google-gtag" # GA4
+  google:
+    tracking_id: "G-2CWQ3VBQG6" # 你的 GA4 ID
+    anonymize_ip: true
