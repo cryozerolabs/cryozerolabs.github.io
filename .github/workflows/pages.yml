@@ -2,7 +2,7 @@ name: Build & Deploy Jekyll (Minimal Mistakes)
 
 on:
   push:
-    branches: ["main"] # 或 master
+    branches: ["master"]
   workflow_dispatch:
 
 permissions:
@@ -29,6 +29,8 @@ jobs:
         run: bundle install --jobs 4 --retry 3
 
       - name: Build with Jekyll
+        env:
+          JEKYLL_ENV: production
         run: bundle exec jekyll build --trace
 
       - name: Upload artifact
