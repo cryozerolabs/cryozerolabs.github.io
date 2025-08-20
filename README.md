@@ -1,27 +1,44 @@
-# Minimal Mistakes remote theme starter
+# 1.基础工具
+xcode-select --install
 
-Click [**Use this template**](https://github.com/mmistakes/mm-github-pages-starter/generate) button above for the quickest method of getting started with the [Minimal Mistakes Jekyll theme](https://github.com/mmistakes/minimal-mistakes).
+# 2.装 Ruby（建议用 rbenv 管理多个版本）
+brew install rbenv ruby-build
+rbenv init - zsh >> ~/.zshrc
+source ~/.zshrc
+rbenv install 3.3.4
+rbenv global 3.3.4
 
-Contains basic configuration to get you a site with:
+# 3.装 Bundler
+gem install bundler
 
-- Sample posts.
-- Sample top navigation.
-- Sample author sidebar with social links.
-- Sample footer links.
-- Paginated home page.
-- Archive pages for posts grouped by year, category, and tag.
-- Sample about page.
-- Sample 404 page.
-- Site wide search.
 
-Replace sample content with your own and [configure as necessary](https://mmistakes.github.io/minimal-mistakes/docs/configuration/).
+用 Bundler 本地预览是 GitHub Pages 官方推荐的做法，能避免环境不一致导致的构建问题。
+GitHub Docs
++1
 
----
+在你的仓库里启动本地服务
+git clone https://github.com/cryozerolabs/cryozerolabs.github.io
+cd cryozerolabs.github.io
 
-## Troubleshooting
+# 4.安装依赖（Gemfile 里会包含 github-pages 等依赖）
+bundle install
 
-If you have a question about using Jekyll, start a discussion on the [Jekyll Forum](https://talk.jekyllrb.com/) or [StackOverflow](https://stackoverflow.com/questions/tagged/jekyll). Other resources:
+# 5.启动本地预览（自动监测变更）
+bundle exec jekyll serve --livereload
 
-- [Ruby 101](https://jekyllrb.com/docs/ruby-101/)
-- [Setting up a Jekyll site with GitHub Pages](https://jekyllrb.com/docs/github-pages/)
-- [Configuring GitHub Metadata](https://github.com/jekyll/github-metadata/blob/master/docs/configuration.md#configuration) to work properly when developing locally and avoid `No GitHub API authentication could be found. Some fields may be missing or have incorrect data.` warnings.
+
+启动后访问：http://127.0.0.1:4000/
+（jekyll serve 就是官方的本地预览命令；--livereload 支持热刷新。) 
+Jekyll
++1
+
+有用的启动参数
+
+预览草稿与未发布文章：
+bundle exec jekyll serve --livereload --drafts --unpublished
+
+更接近线上（生产）环境预览：
+JEKYLL_ENV=production bundle exec jekyll serve
+
+局域网同网段设备访问：
+bundle exec jekyll serve --host 0.0.0.0 --port 4000

@@ -1,54 +1,18 @@
-# Welcome to Jekyll!
-#
-# This config file is meant for settings that affect your whole blog, values
-# which you are expected to set up once and rarely edit after that. If you find
-# yourself editing this file very often, consider using Jekyll's data files
-# feature for the data you need to update frequently.
-#
-# For technical reasons, this file is *NOT* reloaded automatically when you use
-# 'bundle exec jekyll serve'. If you change this file, please restart the server process.
-
-# Site settings
-# These are used to personalize your new site. If you look in the HTML files,
-# you will see them accessed via {{ site.title }}, {{ site.email }}, and so on.
-# You can create any custom variable you would like, and they will be accessible
-# in the templates via {{ site.myvariable }}.
-title: MM
+---
+title: "冰零实验室 | CryoZero Labs ｜ AI & Dev"
 email:
-description: >- # this means to ignore newlines until "baseurl:"
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
-twitter_username: username
-github_username: username
+description: Practical AI & Dev — tools, workflows, and real-world engineering
+twitter_username: CryoZeroLabs
+github_username: CryoZeroLabs
 minimal_mistakes_skin: default
 search: true
-
-# Build settings
 markdown: kramdown
-remote_theme: mmistakes/minimal-mistakes
-# Outputting
-permalink: /:categories/:title/
-paginate: 5 # amount of posts to show
-paginate_path: /page:num/
-timezone: # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-
+permalink: "/:categories/:title/"
+paginate: 5
+paginate_path: "/page:num/"
+timezone:
 include:
   - _pages
-
-# Exclude from processing.
-# The following items will not be processed, by default. Create a custom list
-# to override the default setting.
-# exclude:
-#   - Gemfile
-#   - Gemfile.lock
-#   - node_modules
-#   - vendor/bundle/
-#   - vendor/cache/
-#   - vendor/gems/
-#   - vendor/ruby/
-
-# Plugins (previously gems:)
 plugins:
   - jekyll-paginate
   - jekyll-sitemap
@@ -56,39 +20,33 @@ plugins:
   - jekyll-feed
   - jemoji
   - jekyll-include-cache
-
+  - jekyll-seo-tag
 author:
-  name   : "First Lastname"
-  avatar : "/assets/images/bio-photo.jpg"
-  bio    : "My awesome biography constrained to a sentence or two goes here."
+  name: CryoZeroLabs
+  avatar: "/assets/images/bio-photo.jpg"
+  bio: "Hi — I’m **CryoZero**, a software engineer. This is where I turn **AI** into durable productivity—covering tools, workflows & automation, backend/devops, and data. I keep a simple standard: **Reusable. Verifiable. Shippable.** Expect playbooks, checklists, and real production notes. 🚀"
   links:
-    - label: "Website"
-      icon: "fas fa-fw fa-link"
-      url: "https://"
-    - label: "Twitter"
-      icon: "fab fa-fw fa-twitter-square"
-      url: "https://twitter.com/"
-    - label: "GitHub"
-      icon: "fab fa-fw fa-github"
-      url: "https://github.com/"
-    - label: "Instagram"
-      icon: "fab fa-fw fa-instagram"
-      url: "https://instagram.com/"
-
+    - label: 微信公众号：冰零的AI工具库
+      icon: fab fa-fw fa-weixin
+      url: /
+    - label: 小红书、抖音同公众号
+      icon: fab fa-fw fa-tiktok
+      url: /
+    - label: WeChat：CryoZero
+      icon: fab fa-fw fa-weixin
+      url: /
 footer:
   links:
-    - label: "Twitter"
-      icon: "fab fa-fw fa-twitter-square"
-      url: "https://twitter.com/"
-    - label: "GitHub"
-      icon: "fab fa-fw fa-github"
-      url: "https://github.com/"
-    - label: "Instagram"
-      icon: "fab fa-fw fa-instagram"
-      url: "https://instagram.com/"
-
+    - label: 微信公众号：冰零的AI工具库
+      icon: fab fa-fw fa-weixin
+      url: https://mp.weixin.qq.com/s/6ezAjven7DIexwYnm3vNAA
+    - label: GitHub
+      icon: fab fa-fw fa-github
+      url: https://github.com/CryoZeroLabs
+    - label: CryoZeroLabs
+      icon: fab fa-fw fa-x-twitter
+      url: https://x.com/CryoZeroLabs
 defaults:
-  # _posts
   - scope:
       path: ""
       type: posts
@@ -99,17 +57,16 @@ defaults:
       comments: true
       share: true
       related: true
-  # _pages
   - scope:
-      path: "_pages"
+      path: _pages
       type: pages
     values:
       layout: single
       author_profile: true
-
 category_archive:
   type: liquid
-  path: /categories/
+  path: "/categories/"
 tag_archive:
   type: liquid
-  path: /tags/
+  path: "/tags/"
+theme: minimal-mistakes-jekyll
