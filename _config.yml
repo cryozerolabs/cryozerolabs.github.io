@@ -7,6 +7,10 @@ github_username: CryoZeroLabs
 minimal_mistakes_skin: default
 search: true
 markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+  syntax_highlighter: rouge
 permalink: "/:categories/:title/"
 paginate: 5
 paginate_path: "/page:num/"
