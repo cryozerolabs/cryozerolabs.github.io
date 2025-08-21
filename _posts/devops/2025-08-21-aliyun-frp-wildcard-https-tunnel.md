@@ -3,7 +3,7 @@ title: "用阿里云 + frp 搭建支持 HTTPS 的泛子域名内网穿透服务"
 date: 2025-08-21
 description: "基于阿里云 ECS 与 frp，自建支持 HTTPS 的泛子域名内网穿透服务。含域名解析、通配证书、Nginx 统一 TLS、权限加固与常见问题排查的完整实战指南"
 categories:
-  - blog
+  - devops
 tags:
   - frp
   - 内网穿透
