@@ -12,6 +12,9 @@ kramdown:
   hard_wrap: false
   syntax_highlighter: rouge
 permalink: "/:categories/:title/"
+# 显示面包屑导航
+breadcrumbs: true
+# 分页
 paginate: 5
 paginate_path: "/page:num/"
 timezone:
@@ -57,10 +60,15 @@ defaults:
     values:
       layout: single
       author_profile: true
+      # 显示日期
+      show_date: true
+      # 显示预计阅读时间
       read_time: true
       comments: true
       share: true
       related: true
+      # 设置文章宽度
+      classes: wide
   - scope:
       path: _pages
       type: pages
@@ -74,8 +82,14 @@ tag_archive:
   type: liquid
   path: "/tags/"
 theme: minimal-mistakes-jekyll
+# 谷歌分析
 analytics:
   provider: "google-gtag" # GA4
   google:
     tracking_id: "G-2CWQ3VBQG6" # 你的 GA4 ID
     anonymize_ip: true
+# 压缩 HTML
+compress_html:
+  clippings: all
+  ignore:
+    envs: development # disable compression in dev environment
