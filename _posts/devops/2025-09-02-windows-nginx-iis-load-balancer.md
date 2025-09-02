@@ -12,14 +12,20 @@ tags:
   - websocket
   - https
   - windows-service
+excerpt_separator: "<!--more-->"
 ---
+在 Windows 上部署 NGINX 作为 IIS 前置负载均衡的实战指南：配置 HTTPS/HTTP/2 与 WebSocket，least_conn+权重调度，fullchain 证书与安全加固，IIS 两种绑定方案（Host Header 或 8080/8081），服务化运行与排错清单，附完整可复制示例。
+{: .notice}
 
+<!--more-->
 # 1.架构与适用场景
 将 TLS 终止、负载均衡与流量治理集中到 NGINX，IIS 只专注于应用本身。
 - **证书集中**：TLS 只在 NGINX 终止，IIS 走内网纯 HTTP，维护成本更低；
 - **流量治理**：支持负载均衡、灰度、蓝绿、压测分流；
 - **跨技术栈**：无论后端是 IIS/.NET 还是其它服务，都能统一被接入（WebSocket 也 OK）。
+
 > 说明：本文中的域名与 IP 统一使用示例值（如 `app.example.com`、`10.0.0.x`），请替换为你的真实信息。
+{: .notice--primary}
 
 # 2.准备与下载（Windows 稳定版）
 - 前往 `https://nginx.org/en/download.html` 下载 **Stable** 版本（稳定分支）。
@@ -37,6 +43,7 @@ D:/nginx/
 └─ logs/ # 访问与错误日志
 ```
 > Windows 上 `nginx.conf` 默认在 `conf/` 目录中，`include snippets/*.conf` 等相对路径会以 `conf/` 为基准。
+{: .notice--primary}
 
 # 3.主配置 nginx.conf（含 WebSocket 与统一日志）
 将以下内容保存为 `conf/nginx.conf`（核心与你提供的一致，已整理可直接用）：
@@ -128,6 +135,7 @@ add_header Referrer-Policy strict-origin-when-cross-origin always;
 ```
 
 > 证书务必使用 fullchain；如果中间证书缺失，客户端可能握手失败。
+{: .notice--warning}
 
 # 5.定义上游池 upstream（负载均衡）
 在 `conf/upstreams.d/` 下创建 `app_upstream.conf`，按 CPU 核心数 经验分配权重，并启用最少连接法：
@@ -145,6 +153,7 @@ upstream app_upstream {
 }
 ```
 > `max_fails/fail_timeout` 属于被动健康检查，当连接/响应失败累计到阈值后，暂时将该节点视为不可用；可结合 `proxy_next_upstream` 做快速切换。
+{: .notice--primary}
 
 # 6.站点 server 配置（HTTP→HTTPS、HTTP/2、证书路径）
 在 `conf/conf.d/` 下创建 `app.example.com.conf`：
@@ -206,6 +215,7 @@ server {
 - TLS 仅在 NGINX，IIS 不做证书配置。
 
 > 优点：后端仍可“基于域名”做站点隔离；迁移到 K8s 或其它平台时，前后职责清晰。
+{: .notice--primary}
 
 ## 方案 B：IIS 不绑定域名（Host Header 留空），用端口区分站点
 适用：在 NGINX 层完成所有域名分流，IIS 只按端口开多个站点，例如 `8080`、`8081`。
@@ -267,6 +277,7 @@ server {
 }
 ```
 > 优点：IIS 配置最简化；缺点：后端无法再基于 Host Header 区分站点，需要用不同端口维护。
+{: .notice--primary}
 
 # 8.将 NGINX 以 Windows 服务运行（服务化）
 Windows 版本的 nginx 被视为测试版本，截止至`1.29.1`，nginx作为服务运行，仍然是future。
@@ -329,6 +340,7 @@ winsw允许将任何.exe 文件作为 Windows 服务使用。它使用 XML 来�
 > 注意：
 > - 确认进程权限与工作目录正确，否则热加载/服务管理可能失败；
 > - 路径含空格时，建议简化安装路径或使用引号。
+{: .notice--warning}
 
 # 9.常见问题与排错清单
 - 502/504：上游不可达或超时。检查：
