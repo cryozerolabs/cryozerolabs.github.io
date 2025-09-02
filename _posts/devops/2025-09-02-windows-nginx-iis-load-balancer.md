@@ -292,21 +292,17 @@ winsw允许将任何.exe 文件作为 Windows 服务使用。它使用 XML 来�
 
 # 启动服务
 .\nginx-service.exe start
-```
 
-要对nginx进行设置仍使用nginx.exe
-```powershell
-# 修改配置后，先自检配置，再热加载
-.\nginx.exe -t
-.\nginx.exe -s reload
-```
-
-如后续需要停止/卸载服务
-```powershell
-# 停止/卸载服务
+# 停止服务
 .\nginx-service.exe stop
+# 重启服务
+.\nginx-service.exe stop
+# 卸载服务
 .\nginx-service.exe uninstall
 ```
+
+nginx自检仍然使用 `.\nginx.exe -t`
+
 
 > 注意：
 > - 确认进程权限与工作目录正确，否则热加载/服务管理可能失败；
