@@ -2,7 +2,7 @@
 title: "在 Windows 上部署 NGINX 作为 IIS 前置负载均衡（HTTPS/HTTP/2、WebSocket、服务化全攻略）"
 date: 2025-09-02
 last_modified_at: 2025-09-02
-description: 在 Windows 上部署 NGINX 作为 IIS 前置负载均衡的实战指南：配置 HTTPS/HTTP/2 与 WebSocket，least_conn+权重调度，fullchain 证书与安全加固，IIS 两种绑定方案（Host Header 或 8080/8081），服务化运行与排错清单，附完整可复制示例。
+description: 在 Windows 上部署 NGINX 作为 IIS 前置负载均衡的实战指南：配置 HTTPS/HTTP/2 与 WebSocket，least_conn+权重调度，fullchain 证书与安全加固，基于粘性Cookie得会话保持，服务化运行与排错清单，附完整可复制示例。
 categories:
   - devops
 tags:
@@ -14,7 +14,7 @@ tags:
   - windows-service
 excerpt_separator: "<!--more-->"
 ---
-在 Windows 上部署 NGINX 作为 IIS 前置负载均衡的实战指南：配置 HTTPS/HTTP/2 与 WebSocket，least_conn+权重调度，fullchain 证书与安全加固，IIS 两种绑定方案（Host Header 或 8080/8081），服务化运行与排错清单，附完整可复制示例。
+在 Windows 上部署 NGINX 作为 IIS 前置负载均衡的实战指南：配置 HTTPS/HTTP/2 与 WebSocket，least_conn+权重调度，fullchain 证书与安全加固，基于粘性Cookie得会话保持，服务化运行与排错清单，附完整可复制示例。
 {: .notice}
 
 <!--more-->
@@ -142,7 +142,7 @@ add_header Referrer-Policy strict-origin-when-cross-origin always;
 ```nginx
 # conf/upstreams.d/app_upstream.conf
 upstream app_upstream {
-    least_conn;  # 最少连接策略，适合长连接或响应时延不均衡的应用
+    least_conn;  # 最少连接策略
 
     # 💡 请替换为你的真实内网 IP 与端口（示例注释中的“16/8核”为权重参考）
     server 10.0.0.2:8080 weight=2  max_fails=3 fail_timeout=10s;  # 16核
@@ -303,11 +303,76 @@ winsw允许将任何.exe 文件作为 Windows 服务使用。它使用 XML 来�
 
 nginx自检仍然使用 `.\nginx.exe -t`
 
+如果出现意外，比如自己用.\nginx.exe 启动了nginx 而导致脱离了服务的控制，无法通过nginx-service.exe对服务进行重启的，就需要强制结束了。
+所以，不要自己的用.\nginx启动，要重启之前，先自检，因为重启报错也可能导致脱离服务管控。
+```shell
+taskkill /F /IM nginx.exe
+
+```
 
 > 注意：
 > - 确认进程权限与工作目录正确，否则热加载/服务管理可能失败；
 > - 路径含空格时，建议简化安装路径或使用引号。
 {: .notice--warning}
+
+# 9.（补充）实现基于粘性Cookie的会话保持
+前面配置的upstream，使用least_conn更均衡的分配。但是用到websocket就不行了。
+这里我参考了阿里云负载均衡服务（SLB）中CLB的 植入Cookie方式，来保持会话粘性。
+## 9.1 修改nginx.conf
+在 `http {}` 片段中插入代码，其中`SRV_STICKY`就是我们要植入的cookie，记住等会会用到，当然也可以根据实际情况修改。
+```nginx
+	# 是否需要种黏性Cookie
+	map $cookie_SRV_STICKY $need_sticky {
+		""      1;   # 没有 -> 需要下发
+		default 0;
+	}
+
+	# 生成要下发的Cookie值（只在 need_sticky=1 时使用）
+	map $request_id $sticky_value {
+		default $request_id;
+	}
+```
+
+## 9.3 增加upstream以支持sticky
+修改`conf/upstreams.d/app_upstream.conf` 增加app_signalr_cookie
+```nginx
+# conf/upstreams.d/app_upstream.conf
+upstream app_upstream {
+    ... 原来的不要动
+}
+
+# 新增的
+upstream app_signalr_cookie {
+    hash $cookie_SRV_STICKY consistent;  # 按我们种的 cookie 黏性
+
+    # 💡 请替换为你的真实内网 IP 与端口（示例注释中的“16/8核”为权重参考）
+    server 10.0.0.2:8080 weight=2  max_fails=3 fail_timeout=10s;  # 16核
+    server 10.0.0.3:8080 weight=1  max_fails=3 fail_timeout=10s;  # 8核
+    server 10.0.0.4:8080 weight=1  max_fails=3 fail_timeout=10s;  # 8核
+
+    keepalive 64;  # 复用到上游的长连接数量
+}
+```
+
+## 9.2 对指定的websocket路径设置粘性会话
+修改`conf/conf.d/app.example.com.conf`， 增加一条规则。
+```nginx
+location ^~ /ws/ {
+		# 第一次没 Cookie 才种
+		if ($need_sticky) {
+			add_header Set-Cookie "SRV_STICKY=$sticky_value; Path=/; Max-Age=3600; HttpOnly; Secure; SameSite=Lax" always;
+		}
+
+		proxy_pass http://app_signalr_cookie;
+		proxy_buffering off;
+		proxy_read_timeout  3600s;
+		proxy_send_timeout  3600s;
+	}
+```
+
+接下来
+1. 重启nginx
+2. 在浏览器中验证Cookie中是否有key：`SRV_STICKY`
 
 # 9.常见问题与排错清单
 - 502/504：上游不可达或超时。检查：
