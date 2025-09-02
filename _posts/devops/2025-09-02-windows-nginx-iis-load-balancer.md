@@ -374,7 +374,7 @@ location ^~ /ws/ {
 1. 重启nginx
 2. 在浏览器中验证Cookie中是否有key：`SRV_STICKY`
 
-# 9.常见问题与排错清单
+# 10.常见问题与排错清单
 - 502/504：上游不可达或超时。检查：
   - 内网防火墙是否放通 8080/8081；
   - IIS 站点是否启动、应用池是否健康；
@@ -387,7 +387,7 @@ location ^~ /ws/ {
 - 日志定位：查看 `logs/error.log` 与 `logs/access.log`，快速筛选关键字符串或状态码。
 - 端口占用：Windows 上用 `netstat -ano | findstr :80 / :443 / :8080` 定位占用进程。
 
-# 10.发布前检查清单（Checklist）
+# 11.发布前检查清单（Checklist）
 - ✅ 域名解析正确，公网仅指向 NGINX 所在机器；
 - ✅ 证书（fullchain/privkey）路径与权限无误；
 - ✅ Windows 防火墙、云安全组等放通 80/443（入口）与 8080/8081（到 IIS）；
