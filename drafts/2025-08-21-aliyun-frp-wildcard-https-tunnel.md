@@ -18,17 +18,37 @@ tags:
   - 通配证书
   - 微信回调内网穿透
 ---
-# 0x00 背景与目标
+# 1.背景与目标
 - 什么是内网穿透 & 为何选 frp
 - “泛子域名”能带来什么（多服务/多环境一键映射）
 - 最终效果预览：app1.tunnel.example.com / dev-api.tunnel.example.com 即开即用
 
-# 0x01 准备工作
+# 2.实现思路
+- Ubuntu
+- Nginx
+- Docker
+- 域名
 
-# 0x02 部署 frps（服务端）
-# 0x03 配置 frpc（客户端）
+# 3.部署 frps（服务端）
+## 3.1 准备FRP服务端配置
+```shell
+sudo mkdir -p /opt/frps
+```
 
-# 0x04 泛子域名与HTTPS
+## 3.2 用Docker跑frps
+```shell
+sudo docker run -d --name frps --restart unless-stopped \
+  --network host \
+  -v /opt/frps/frps.toml:/etc/frp/frps.toml:ro \
+  fatedier/frps:v0.64.0 -c /etc/frp/frps.toml
+```
+> 本文编写与2025-08，fatedier/frps稳定版本为v0.64.0
+
+## 3.3 Nginx配置
+## 3.4 泛子域名与HTTPS
 
 
-# 0x05 总结与后续
+# 4.配置 frpc（客户端）
+
+# 5.常见问题
+## 
