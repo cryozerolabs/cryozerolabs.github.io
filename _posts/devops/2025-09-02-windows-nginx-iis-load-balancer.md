@@ -28,7 +28,7 @@ excerpt_separator: "<!--more-->"
 {: .notice--primary}
 
 # 2.准备与下载（Windows 稳定版）
-- 前往 `https://nginx.org/en/download.html` 下载 **Stable** 版本（稳定分支）。
+- 前往 `link:https://nginx.org/en/download.html` 下载 **Stable** 版本（稳定分支）。
 - 解压到例如 `D:/nginx`
 - 在服务器放通 **80/443**（入口）以及到后端 IIS 的 **8080/8081** 等内网端口（按你的配置）。
 
@@ -191,39 +191,12 @@ server {
 }
 ```
 
-# 7.IIS 侧设置：两种常见方案
-
-针对 IIS 的站点绑定，你给出的两种思路都可行，取决于你希望在 IIS 还是在 NGINX 完成“基于域名的站点分流”。
-
-## 方案 A：IIS 绑定主机头（Host Header）+ 非 443 端口（推荐）
-
-适用：已有 `app.example.com` 的公网 443 由 NGINX 承担（TLS 终止在 NGINX），IIS 只需监听 HTTP 8080。
-
-### IIS 操作（每台后端站点类似）：
-1. 打开站点 绑定（Bindings），无需添加 HTTPS 绑定（证书在 NGINX）。
-2. 添加或修改 HTTP 绑定：
-  - 类型：http
-  - IP 地址：站点监听 IP（通常 `All Unassigned`）
-  - 端口：`8080`
-  - 主机名（Host name）：`app.example.com`（用于区分不同域的站点）
-
-3. 确保应用池正常、站点启动，服务器防火墙放通 8080（内网）。
-
-### NGINX 配合：
-- 上游写成 `10.0.0.x:8080`；
-- 代理头已注入 `Host: $host`，后端 IIS 能根据 Host Header 正确路由到该站点；
-- TLS 仅在 NGINX，IIS 不做证书配置。
-
-> 优点：后端仍可“基于域名”做站点隔离；迁移到 K8s 或其它平台时，前后职责清晰。
-{: .notice--primary}
-
-## 方案 B：IIS 不绑定域名（Host Header 留空），用端口区分站点
-适用：在 NGINX 层完成所有域名分流，IIS 只按端口开多个站点，例如 `8080`、`8081`。
-### IIS 操作：
+# 7.IIS 侧设置
+## IIS 操作：
 - 站点 A：HTTP 绑定 `*:8080`，主机名留空；
 - 站点 B：HTTP 绑定 `*:8081`，主机名留空；
 - 其它站点以此类推（8082、8083…）。
-### NGINX 配合（示例：两个域名分别指向不同端口站点）：
+## NGINX 配合（示例：两个域名分别指向不同端口站点）：
 
 ```nginx
 # conf/upstreams.d/appA_upstream.conf
@@ -276,12 +249,10 @@ server {
     location / { proxy_pass http://appB_upstream; }
 }
 ```
-> 优点：IIS 配置最简化；缺点：后端无法再基于 Host Header 区分站点，需要用不同端口维护。
-{: .notice--primary}
 
 # 8.将 NGINX 以 Windows 服务运行（服务化）
 Windows 版本的 nginx 被视为测试版本，截止至`1.29.1`，nginx作为服务运行，仍然是future。
-幸运的是，我找到了一个开源的解决方案`link: https://github.com/winsw/winsw`，它是用.ne构建的，允许将任何可执行文件作为服务运行。
+幸运的是，我找到了一个开源的解决方案`link: https://github.com/winsw/winsw`，它是用.net构建的，允许将任何可执行文件作为服务运行。
 
 winsw允许将任何.exe 文件作为 Windows 服务使用。它使用 XML 来处理服务的配置和安装。
 对于Windows x64可以直接下载
