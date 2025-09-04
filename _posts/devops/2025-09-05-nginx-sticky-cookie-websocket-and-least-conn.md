@@ -103,7 +103,6 @@ http {
 ```
 
 > 这里的重点就在于map组合[`$cookie_SRV_STICKY $need_sticky`, `$request_id $sticky_value`], 让我们可以“只在需要的 location”里发 Cookie，其他位置不受影响。
-
 {: .notice--primary}
 
 
@@ -144,7 +143,8 @@ server {
 
 # HTTPS 主站点
 server {
-    listen      443 ssl http2;
+    listen      443 ssl;
+     http2 on;
     server_name www.example.com;
 
     # 证书（fullchain）
@@ -196,6 +196,7 @@ proxy_http_version 1.1;
 {: .notice--primary}
 
 # 6. 与 ip_hash 的对照
+
 | 维度         | `ip_hash`                                          | Cookie 一致性哈希             |
 | ------------ | -------------------------------------------------- | -------------------------------------------- |
 | 精细度       | 只能对一个 upstream 生效，难以**按 location 控制** | 只在需要的路由种 Cookie，其它照常            |
