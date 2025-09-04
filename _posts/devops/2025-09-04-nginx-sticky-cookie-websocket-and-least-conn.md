@@ -1,7 +1,7 @@
 ---
 title: "用 Nginx 通过自种 Cookie 做会话保持，像云厂商 SLB/CLB 的“植入 Cookie”那样复刻到自建 Nginx"
-date: 2025-09-02
-last_modified_at: 2025-09-02
+date: 2025-09-04
+last_modified_at: 2025-09-04
 description: 在 Ubuntu 上用 Nginx 通过自种 Cookie 做会话保持：WebSocket 路由用一致性哈希粘住，其他请求继续 least_conn。本文也会解释为什么不用 ip_hash，以及如何像云厂商 SLB/CLB 的“植入 Cookie”那样复刻到自建 Nginx。
 categories:
   - devops

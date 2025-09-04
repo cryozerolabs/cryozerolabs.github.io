@@ -28,7 +28,7 @@ excerpt_separator: "<!--more-->"
 {: .notice--primary}
 
 # 2.准备与下载（Windows 稳定版）
-- 前往 `link:https://nginx.org/en/download.html` 下载 **Stable** 版本（稳定分支）。
+- 前往 [https://nginx.org/en/download.html]() 下载 **Stable** 版本（稳定分支）。
 - 解压到例如 `D:/nginx`
 - 在服务器放通 **80/443**（入口）以及到后端 IIS 的 **8080/8081** 等内网端口（按你的配置）。
 
@@ -252,12 +252,12 @@ server {
 
 # 8.将 NGINX 以 Windows 服务运行（服务化）
 Windows 版本的 nginx 被视为测试版本，截止至`1.29.1`，nginx作为服务运行，仍然是future。
-幸运的是，我找到了一个开源的解决方案`link: https://github.com/winsw/winsw`，它是用.net构建的，允许将任何可执行文件作为服务运行。
+幸运的是，我找到了一个开源的解决方案 [https://github.com/winsw/winsw]()，它是用.net构建的，允许将任何可执行文件作为服务运行。
 
 winsw允许将任何.exe 文件作为 Windows 服务使用。它使用 XML 来处理服务的配置和安装。
 对于Windows x64可以直接下载
 
-`link:https://github.com/winsw/winsw/releases/download/v2.12.0/WinSW-x64.exe`
+[https://github.com/winsw/winsw/releases/download/v2.12.0/WinSW-x64.exe]()
 
 下载后，进入nginx目录，并将文件复制到目录下，在这个例子中是 `D:/nginx`，并将其重命名为 `nginx-service.exe`。
 
