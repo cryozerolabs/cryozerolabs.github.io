@@ -92,14 +92,14 @@ docker run --rm hello-world
   "registry-mirrors": [
     "http://docker.m.daocloud.io",
     "https://docker.1ms.run",
-    "http://run-docker.cn",
-    "http://docker.hlmirror.com",
-    "http://docker.tbedu.top",
+    "https://run-docker.cn",
+    "https://docker.hlmirror.com",
+    "https://docker.tbedu.top",
     "https://dhub.kubesre.xyz"
   ]
 }
 ```
-![docker-open-termianl](/assets/images/2025/09/04/docker-engine-set-registry-mirrors.png)
+![docker-open-termianl](/assets/images/2025/09/04/docker-engine-set-registry-mirrors.jpg)
 点击 `Apply & restart` 使其生效（不同版本也可在 Settings 总页签里调整，或直接改 settings-store.json）。
 
 ## 3.2 适用于Ubuntu(Linux): 编辑 daemon.json
@@ -109,11 +109,11 @@ sudo mkdir -p /etc/docker
 sudo tee /etc/docker/daemon.json >/dev/null <<'EOF'
 {
   "registry-mirrors": [
-    "http://docker.m.daocloud.io",
+    "https://docker.m.daocloud.io",
     "https://docker.1ms.run",
-    "http://run-docker.cn",
-    "http://docker.hlmirror.com",
-    "http://docker.tbedu.top",
+    "https://run-docker.cn",
+    "https://docker.hlmirror.com",
+    "https://docker.tbedu.top",
     "https://dhub.kubesre.xyz"
   ]
 }
