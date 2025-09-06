@@ -90,7 +90,7 @@ docker run --rm hello-world
 ```json
 {
   "registry-mirrors": [
-    "http://docker.m.daocloud.io",
+    "https://docker.m.daocloud.io",
     "https://docker.1ms.run",
     "https://run-docker.cn",
     "https://docker.hlmirror.com",
