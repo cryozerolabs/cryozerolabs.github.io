@@ -4,6 +4,7 @@ email:
 description: Practical AI & Dev — tools, workflows, and real-world engineering
 twitter_username: CryoZeroLabs
 github_username: CryoZeroLabs
+repository: CryoZeroLabs/cryozerolabs.github.io
 minimal_mistakes_skin: default
 search: true
 markdown: kramdown
@@ -103,8 +104,6 @@ comments:
     category_id: DIC_kwDOPZ2Anc4CvJnw
     mapping: pathname   # 建议：按文章路径映射
     reactions_enabled: "1"
-    strict: "0"
-    input_position: "bottom"
     emit_metadata: "0"
     theme: preferred_color_scheme
     lang: en
