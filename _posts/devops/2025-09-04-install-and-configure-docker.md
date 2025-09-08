@@ -20,7 +20,7 @@ excerpt_separator: "<!--more-->"
 
 # 1. macOS / Windows: 安装 Docker Desktop
 ## 1.1 下载安装 Docker Desktop
-1. 访问官网下载安装包，按照向导安装。
+1. 访问[Docker官网](https://www.docker.com/)下载安装包，按照向导安装。
 2. Windows 建议启用 WSL 2 后端（安装向导会引导完成）。
 
 ## 1.2 快速自检
@@ -28,7 +28,7 @@ excerpt_separator: "<!--more-->"
 ```bash
 docker run --rm hello-world
 ```
-![docker-open-termianl](/assets/images/2025/09/04/docker-open-termianl.png)
+![docker-open-termianl](/assets//2025/09/04/install-and-configure-docker/docker-open-termianl.png)
 
 若 `hello-world` 成功输出欢迎文案，说明安装 OK。若失败，继续阅读第 [3.配置镜像加速registry-mirror](#3配置镜像加速registry-mirrors) 后再试。
 
@@ -99,7 +99,7 @@ docker run --rm hello-world
   ]
 }
 ```
-![docker-open-termianl](/assets/images/2025/09/04/docker-engine-set-registry-mirrors.jpg)
+![docker-open-termianl](/assets/2025/09/04/install-and-configure-docker/docker-engine-set-registry-mirrors.jpg)
 点击 `Apply & restart` 使其生效（不同版本也可在 Settings 总页签里调整，或直接改 settings-store.json）。
 
 ## 3.2 适用于Ubuntu(Linux): 编辑 daemon.json
