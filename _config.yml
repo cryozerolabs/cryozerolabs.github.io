@@ -93,3 +93,19 @@ compress_html:
   clippings: all
   ignore:
     envs: development # disable compression in dev environment
+# 评论系统
+comments:
+  provider: giscus
+  giscus:
+    repo: cryozerolabs/cryozerolabs.github.io
+    repo_id: R_kgDOPZ2AnQ
+    category: General
+    category_id: DIC_kwDOPZ2Anc4CvJnw
+    mapping: pathname   # 建议：按文章路径映射
+    reactions_enabled: "1"
+    strict: "0"
+    input_position: "bottom"
+    metadata: "0"
+    theme: preferred_color_schese
+    lang: en
+    crossorigin: "anonymous"
